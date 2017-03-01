@@ -15,7 +15,18 @@ class TestBasicPipelineCreation(object):
         assert pipeline.tasks == [test_task]
 
     def test_multi_task_pipeline(self):
-        pass
+        @task()
+        def test_func1(ctx): return ctx
+
+        @task()
+        def test_func2(ctx): return ctx
+
+        test_task1 = test_func1()
+        test_task2 = test_func2()
+
+        pipeline = Pipeline(test_task1, test_task2)
+
+        assert pipeline.tasks == [test_task1, test_task2]
 
 
 class TestPipelineDependencyChecking(object):
