@@ -41,3 +41,15 @@ class TestTaskWithParamsDecorator(object):
         register.get_handler('test_task')
 
         assert test_task(1, 2)(context) == (context, 1, 2)
+
+
+class TestTaskContextWrapperUpdate(object):
+    def test_func_name_restore(self):
+        @task()
+        def test_func(context): pass
+
+        assert test_func.__name__ == 'test_func'
+
+        test_task = test_func()
+
+        assert test_task.__name__ == 'test_func'

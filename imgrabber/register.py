@@ -1,3 +1,4 @@
+from functools import update_wrapper
 from six import with_metaclass
 from imgrabber.exceptions import TaskAlreadyRegistered, TaskNotFound
 
@@ -41,6 +42,8 @@ def task(depends=[], provides=[]):
         def args_wrapper(*args, **kwargs):
             def context_wrapper(context):
                 return f(context, *args, **kwargs)
+            update_wrapper(context_wrapper, f)
             return context_wrapper
+        update_wrapper(args_wrapper, f)
         return args_wrapper
     return wrapper
