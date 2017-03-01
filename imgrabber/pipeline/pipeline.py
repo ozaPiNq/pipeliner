@@ -5,10 +5,11 @@ from .backend import GeventBackend
 
 
 class Pipeline(object):
-    _providers = {}
-    _backend = GeventBackend()
-
     def __init__(self, first_task, *tasks):
+        self._providers = {}
+        self._backend = GeventBackend()
+
+        # TODO: move to separate method
         if len(self._get_depends(first_task)) > 0:
             raise TaskDependencyError("First task can't have dependencies")
 
