@@ -1,3 +1,5 @@
+import pytest
+
 from imgrabber.pipeline import Pipeline
 from imgrabber.register import task
 
@@ -27,6 +29,15 @@ class TestBasicPipelineCreation(object):
         pipeline = Pipeline(test_task1, test_task2)
 
         assert pipeline.tasks == [test_task1, test_task2]
+
+    def test_some_tasks_are_not_functions(self):
+        @task()
+        def test_func(ctx): return ctx
+
+        class Task(object): pass
+
+        with pytest.raises(ValueError):
+            Pipeline(test_func(), test_func(), Task(), test_func())
 
 
 class TestPipelineDependencyChecking(object):
