@@ -1,10 +1,12 @@
 from inspect import isfunction
 from imgrabber.register import Register
 from imgrabber.exceptions import TaskDependencyError
+from .backend import GeventBackend
 
 
 class Pipeline(object):
     _providers = {}
+    _backend = GeventBackend()
 
     def __init__(self, first_task, *tasks):
         if len(self._get_depends(first_task)) > 0:
@@ -43,6 +45,19 @@ class Pipeline(object):
 
     def _is_dependency_satisfied(self, dependency):
         return (dependency in self._providers)
+
+    def run(self, wait=False):
+        self._backend.run(self._run_tasks)
+        if wait:
+            self.wait_until_complete()
+
+    def _run_tasks(self):
+        context = {}
+        for task in self._tasks:
+            context = task(context)
+
+    def wait_until_complete(self):
+        self._backend.wait_until_complete()
 
     @property
     def tasks(self):

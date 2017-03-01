@@ -93,3 +93,16 @@ class TestPipelineDependencyChecking(object):
         assert exc_info.value.message == ('Dependency `unknown_task_result` of'
                                           ' task `test_func3` is not satisfied')
 
+
+class TestPipelineRun(object):
+    def test_run_single_task(self, mock):
+        mock_func = mock()
+
+        @task()
+        def test_func(ctx):
+            mock_func()
+
+        pipeline = Pipeline(test_func())
+        pipeline.run(wait=True)
+
+        assert mock_func.called == True
