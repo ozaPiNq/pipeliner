@@ -33,3 +33,8 @@ class Register(with_metaclass(Singleton, object)):
     def _clear(self):
         """ Remove all handlers """
         self._handlers = {}
+
+
+def task(func):
+    Register().add_handler(func.__name__)
+    return func
