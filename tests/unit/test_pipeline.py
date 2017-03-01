@@ -65,7 +65,16 @@ class TestPipelineDependencyChecking(object):
         assert exc_info.value.message == "First task can't have dependencies"
 
     def test_multi_task_pipeline_with_correct_dependencies(self):
-        pass
+        @task(depends=[], provides=['task1_result'])
+        def test_func1(ctx): return ctx
+
+        @task(depends=['task1_result'], provides=['task2_result'])
+        def test_func2(ctx): return ctx
+
+        @task(depends=['task2_result'], provides=[])
+        def test_func3(ctx): return ctx
+
+        Pipeline(test_func1(), test_func2(), test_func3())
 
     def test_multi_task_pipeline_with_incorrect_dependencies(self):
         pass

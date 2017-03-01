@@ -4,6 +4,8 @@ from imgrabber.exceptions import TaskDependencyError
 
 
 class Pipeline(object):
+    _providers = {}
+
     def __init__(self, first_task, *tasks):
         if len(self._get_depends(first_task)) > 0:
             raise TaskDependencyError("First task can't have dependencies")
@@ -20,8 +22,12 @@ class Pipeline(object):
             depends = self._get_depends(task)
             for dep in depends:
                 if not self._is_dependency_satisfied(dep):
-                    raise TaskDependencyError("Dependency {} of task {}" \
-                        "is not satisfied".format(task.__name__, dep))
+                    raise TaskDependencyError("Dependency `{}` of task `{}` " \
+                        "is not satisfied".format(dep, task.__name__))
+
+            provides = self._get_provides(task)
+            for prov in provides:
+                self._add_provider(prov, task)
 
     def _is_applied(self, task):
         return hasattr(task, '_applied')
