@@ -14,23 +14,27 @@ def test_register_must_be_singleton():
 
 @pytest.fixture
 def register():
-    return Register()
+    r = Register()
+    yield r
+    r._clear()
 
 
 class TestTaskHandling(object):
     def test_task_addition(self, register):
-        def func(): pass
+        def func():
+            pass
 
-        register.add_handler(func.__name__, depends=['d1','d2','d3'], 
-                             provides=['p1','p2'])
+        register.add_handler(func.__name__, depends=['d1', 'd2', 'd3'],
+                             provides=['p1', 'p2'])
 
-        register._handlers[func.__name__] = dict(depends=['d1','d2','d3'],
-                                                 provides=['p1','p2'])
+        register._handlers[func.__name__] = dict(depends=['d1', 'd2', 'd3'],
+                                                 provides=['p1', 'p2'])
 
     def test_duplicated_task_addition(self, register):
-        def func(): pass
+        def func():
+            pass
 
         register.add_handler(func.__name__, depends=[], provides=[])
 
         with pytest.raises(TaskAlreadyRegistered):
-            register.add_handler(func, depends=[], provides=[])
+            register.add_handler(func.__name__, depends=[], provides=[])
