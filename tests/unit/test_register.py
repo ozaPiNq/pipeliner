@@ -31,3 +31,11 @@ class TestTaskHandling(object):
 
         with pytest.raises(TaskAlreadyRegistered):
             register.add_handler(func.__name__, depends=[], provides=[])
+
+    def test_task_retrieval(self, register):
+        def func():
+            pass
+
+        register.add_handler(func.__name__, depends=[], provides=[])
+
+        assert register.get_handler('func') == dict(depends=[], provides=[])

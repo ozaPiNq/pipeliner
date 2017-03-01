@@ -4,3 +4,7 @@ class RegisterException(Exception):
 
 class TaskAlreadyRegistered(RegisterException):
     pass
+
+
+class TaskNotFound(RegisterException):
+    pass
