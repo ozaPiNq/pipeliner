@@ -35,6 +35,7 @@ class Register(with_metaclass(Singleton, object)):
         self._handlers = {}
 
 
-def task(func):
-    Register().add_handler(func.__name__)
-    return func
+def task(depends=[], provides=[]):
+    def wrapper(f):
+        Register().add_handler(f.__name__, depends=depends, provides=provides)
+    return wrapper
