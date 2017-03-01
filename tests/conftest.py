@@ -9,3 +9,8 @@ def register():
     r = Register()
     yield r
     r._clear()
+
+
+@pytest.fixture
+def context():
+    return {}
