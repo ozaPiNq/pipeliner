@@ -32,3 +32,11 @@ class TestTaskWithParamsDecorator(object):
         register.get_handler('test_task')
 
         assert test_task(1, 2, 3, 4) == (1, 2, 3, 4)
+
+    def test_registered_with_depends_and_provides(self, register):
+        @task(depends=['1'], provides=['2'])
+        def test_task(p1, p2=None): return (p1, p2)
+
+        register.get_handler('test_task')
+
+        assert test_task(1, 2) == (1, 2)
