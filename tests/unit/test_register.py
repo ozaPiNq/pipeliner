@@ -12,13 +12,6 @@ def test_register_must_be_singleton():
     assert id(r1) == id(r2) == id(r3)
 
 
-@pytest.fixture
-def register():
-    r = Register()
-    yield r
-    r._clear()
-
-
 class TestTaskHandling(object):
     def test_task_addition(self, register):
         def func():
