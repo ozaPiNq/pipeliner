@@ -31,6 +31,15 @@ class Register(with_metaclass(Singleton, object)):
         else:
             raise TaskNotFound()
 
+    def _get_handler_data(self, func_name, data):
+        return self.get_handler(func_name)[data]
+
+    def get_depends(self, func_name):
+        return self._get_handler_data(func_name, 'depends')
+
+    def get_provides(self, func_name):
+        return self._get_handler_data(func_name, 'provides')
+
     def _clear(self):
         """ Remove all handlers """
         self._handlers = {}

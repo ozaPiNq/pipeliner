@@ -2,6 +2,7 @@ import pytest
 
 from imgrabber.pipeline import Pipeline
 from imgrabber.register import task
+from imgrabber.exceptions import TaskDependencyError
 
 
 class TestBasicPipelineCreation(object):
@@ -50,8 +51,18 @@ class TestBasicPipelineCreation(object):
 
 
 class TestPipelineDependencyChecking(object):
-    def test_single_task_with_dependencies(self):
+    def test_task_was_not_registered(self):
         pass
+
+    def test_single_task_with_dependencies(self):
+        """ Check if first task with dependencies will be rejected """
+        @task(depends=['mega_task'])
+        def test_func(ctx): return ctx
+
+        with pytest.raises(TaskDependencyError) as exc_info:
+            Pipeline(test_func())
+
+        assert exc_info.value.message == "First task can't have dependencies"
 
     def test_multi_task_pipeline_with_correct_dependencies(self):
         pass
