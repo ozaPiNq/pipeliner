@@ -50,9 +50,6 @@ class TestBasicPipelineCreation(object):
 
 
 class TestPipelineDependencyChecking(object):
-    def test_single_task_without_dependencies(self):
-        pass
-
     def test_single_task_with_dependencies(self):
         pass
 
