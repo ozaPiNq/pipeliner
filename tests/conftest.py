@@ -1,4 +1,5 @@
 import pytest
+import six
 
 from imgrabber.register import Register
 
@@ -14,3 +15,13 @@ def register():
 @pytest.fixture
 def context():
     return {}
+
+
+@pytest.fixture
+def mock():
+    if six.PY2:
+        from mock import MagicMock
+    else:
+        from unittest.mock import MagicMock
+
+    return MagicMock
