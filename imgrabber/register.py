@@ -38,4 +38,5 @@ class Register(with_metaclass(Singleton, object)):
 def task(depends=[], provides=[]):
     def wrapper(f):
         Register().add_handler(f.__name__, depends=depends, provides=provides)
+        return f
     return wrapper
