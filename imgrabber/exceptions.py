@@ -8,3 +8,11 @@ class TaskAlreadyRegistered(RegisterException):
 
 class TaskNotFound(RegisterException):
     pass
+
+
+class PipelineException(Exception):
+    pass
+
+
+class TaskDependencyError(PipelineException):
+    pass
