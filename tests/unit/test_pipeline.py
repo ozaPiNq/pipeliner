@@ -51,8 +51,9 @@ class TestBasicPipelineCreation(object):
 
 
 class TestPipelineDependencyChecking(object):
+    @pytest.mark.xfail
     def test_task_was_not_registered(self):
-        pass
+        assert 0, 'write the test'
 
     def test_single_task_with_dependencies(self):
         """ Check if first task with dependencies will be rejected """
