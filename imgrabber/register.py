@@ -43,6 +43,7 @@ def task(depends=[], provides=[]):
             def context_wrapper(context):
                 return f(context, *args, **kwargs)
             update_wrapper(context_wrapper, f)
+            context_wrapper._applied = True
             return context_wrapper
         update_wrapper(args_wrapper, f)
         return args_wrapper

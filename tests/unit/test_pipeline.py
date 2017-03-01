@@ -39,6 +39,15 @@ class TestBasicPipelineCreation(object):
         with pytest.raises(ValueError):
             Pipeline(test_func(), test_func(), Task(), test_func())
 
+    def test_some_tasks_were_not_applied(self):
+        """ Check if Pipeline rejects not applied tasks """
+        @task()
+        def test_func(ctx): return ctx
+
+        with pytest.raises(ValueError):
+            # here we forgot to apply 3rd task
+            Pipeline(test_func(), test_func(), test_func, test_func())
+
 
 class TestPipelineDependencyChecking(object):
     def test_single_task_without_dependencies(self):

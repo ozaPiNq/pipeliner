@@ -7,6 +7,12 @@ class Pipeline(object):
         for task in self._tasks:
             if not isfunction(task):
                 raise ValueError("Task must be a function")
+            if not self._is_applied(task):
+                raise ValueError(
+                    "Task must be applied before adding to pipeline")
+
+    def _is_applied(self, task):
+        return hasattr(task, '_applied')
 
     @property
     def tasks(self):
