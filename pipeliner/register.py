@@ -1,6 +1,6 @@
 from functools import update_wrapper
 from six import with_metaclass
-from imgrabber.exceptions import TaskAlreadyRegistered, TaskNotFound
+from pipeliner.exceptions import TaskAlreadyRegistered, TaskNotFound
 
 
 class Singleton(type):

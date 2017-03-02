@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name="imgrabber",
+    name="pipeliner",
     version="0.0.1",
     author="Nikolay Sedelnikov",
     author_email="n.sedelnikov@gmail.com",

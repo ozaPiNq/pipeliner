@@ -1,6 +1,6 @@
 import pytest
 
-from imgrabber.register import task
+from pipeliner.register import task
 
 
 class TestSimpleTaskDecorator(object):

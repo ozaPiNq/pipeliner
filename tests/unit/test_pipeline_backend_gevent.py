@@ -1,7 +1,7 @@
 import pytest
 
-from imgrabber.pipeline.backend import GeventBackend
-from imgrabber.register import task
+from pipeliner.pipeline.backend import GeventBackend
+from pipeliner.register import task
 
 
 @pytest.fixture

@@ -1,7 +1,7 @@
 import gevent
 
 from .abstract import AbstractBackend
-from imgrabber.exceptions import PipelineAlreadyRunning
+from pipeliner.exceptions import PipelineAlreadyRunning
 
 
 class GeventBackend(AbstractBackend):

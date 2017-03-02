@@ -1,6 +1,6 @@
 from inspect import isfunction
-from imgrabber.register import Register
-from imgrabber.exceptions import TaskDependencyError
+from pipeliner.register import Register
+from pipeliner.exceptions import TaskDependencyError
 from .backend import GeventBackend
 
 

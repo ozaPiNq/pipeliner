@@ -1,8 +1,8 @@
 import pytest
 
-from imgrabber.pipeline import Pipeline
-from imgrabber.register import task
-from imgrabber.exceptions import TaskDependencyError
+from pipeliner.pipeline import Pipeline
+from pipeliner.register import task
+from pipeliner.exceptions import TaskDependencyError
 
 
 class TestBasicPipelineCreation(object):

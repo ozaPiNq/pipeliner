@@ -1,7 +1,7 @@
 import pytest
 
-from imgrabber.register import Register
-from imgrabber.exceptions import TaskAlreadyRegistered
+from pipeliner.register import Register
+from pipeliner.exceptions import TaskAlreadyRegistered
 
 
 def test_register_must_be_singleton():

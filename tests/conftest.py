@@ -1,7 +1,7 @@
 import pytest
 import six
 
-from imgrabber.register import Register
+from pipeliner.register import Register
 
 
 @pytest.fixture(autouse=True)
