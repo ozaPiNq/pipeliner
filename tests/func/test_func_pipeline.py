@@ -1,21 +1,25 @@
 import pytest
 from imgrabber.pipeline import Pipeline
+from imgrabber.register import task
 
 
-@pytest.mark.xfail
 class TestPipeline(object):
-    def test_single_task_pipeline(self, dumb_task, target_mock):
-        mock = target_mock()
-        task = dumb_task(mock=mock)
-        pipeline = Pipeline(task)
+    def test_single_task_pipeline(self, mock):
+        mock_func = mock()
 
-        assert mock.is_called == False
+        @task()
+        def test_func(ctx): mock_func(ctx)
 
-        pipeline.run()
-        pipeline.wait_until_complete()
+        test_task = test_func()
+        pipeline = Pipeline(test_task)
 
-        assert mock.is_called
+        assert not mock_func.called
 
+        pipeline.run(wait=True)
+
+        assert mock_func.called
+
+    @pytest.mark.xfail
     def test_multiple_tasks_pipeline(self, dumb_task, target_mock):
         mock1 = target_mock()
         mock2 = target_mock()
@@ -35,6 +39,7 @@ class TestPipeline(object):
         assert mock2.is_called
         assert mock3.is_called
 
+    @pytest.mark.xfail
     def test_abnormal_pipeline_termination(self, dumb_task, target_mock,
                                            bad_task):
         mock1 = target_mock()
