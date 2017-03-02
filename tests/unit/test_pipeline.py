@@ -95,17 +95,18 @@ class TestPipelineDependencyChecking(object):
 
 
 class TestPipelineRun(object):
-    def test_run_single_task(self, mock):
+    def test_run_single_task(self, mock, context):
         mock_func = mock()
 
         @task()
-        def test_func(ctx):
-            mock_func()
+        def test_func(ctx, arg1, arg2):
+            mock_func(ctx, arg1, arg2)
 
-        pipeline = Pipeline(test_func())
+        pipeline = Pipeline(test_func(arg1='1', arg2='2'))
         pipeline.run(wait=True)
 
         assert mock_func.called == True
+        mock_func.assert_called_with(context, '1', '2')
 
     def test_run_multiple_task(self, mock):
         mock_func1 = mock()
