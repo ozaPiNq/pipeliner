@@ -131,3 +131,28 @@ class TestPipelineRun(object):
         assert mock_func1.called == True
         assert mock_func2.called == True
         assert mock_func3.called == True
+
+    def test_run_multiple_task_one_failed(self, mock):
+        mock_func1 = mock()
+        mock_func2 = mock()
+        mock_func2.side_effect = Exception()
+        mock_func3 = mock()
+
+        @task()
+        def test_func1(ctx):
+            mock_func1(ctx)
+
+        @task()
+        def test_func2(ctx):
+            mock_func2(ctx)
+
+        @task()
+        def test_func3(ctx):
+            mock_func3(ctx)
+
+        pipeline = Pipeline(test_func1(), test_func2(), test_func3())
+        pipeline.run(wait=True)
+
+        assert mock_func1.called == True
+        assert mock_func2.called == True
+        assert mock_func3.called == False
