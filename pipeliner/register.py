@@ -50,7 +50,8 @@ def task(depends=[], provides=[]):
         Register().add_handler(f.__name__, depends=depends, provides=provides)
         def args_wrapper(*args, **kwargs):
             def context_wrapper(context):
-                return f(context, *args, **kwargs)
+                f(context, *args, **kwargs)
+                return context
             update_wrapper(context_wrapper, f)
             context_wrapper._applied = True
             return context_wrapper
