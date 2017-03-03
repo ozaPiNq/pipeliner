@@ -1,5 +1,6 @@
 from inspect import isfunction
 from pipeliner.register import Register
+from pipeliner.context import Context
 from pipeliner.exceptions import TaskDependencyError
 from .backend import GeventBackend
 
@@ -53,7 +54,7 @@ class Pipeline(object):
             self.wait_until_complete()
 
     def _run_tasks(self):
-        context = {}
+        context = Context()
         for task in self._tasks:
             context = task(context)
 

@@ -2,6 +2,7 @@ import pytest
 import six
 
 from pipeliner.register import Register
+from pipeliner.context import Context
 
 
 @pytest.fixture(autouse=True)
@@ -14,7 +15,7 @@ def register():
 
 @pytest.fixture
 def context():
-    return {}
+    return Context()
 
 
 @pytest.fixture
