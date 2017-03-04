@@ -10,7 +10,9 @@ class Pipeline(object):
         self._providers = {}
         self._backend = GeventBackend()
 
-        # TODO: move to separate method
+        self._check_tasks(first_task, *tasks)
+
+    def _check_tasks(self, first_task, *tasks):
         if len(self._get_depends(first_task)) > 0:
             raise TaskDependencyError("First task can't have dependencies")
 
