@@ -63,7 +63,8 @@ class TestPipelineDependencyChecking(object):
         with pytest.raises(TaskDependencyError) as exc_info:
             Pipeline(test_func())
 
-        assert exc_info.value.message == "First task can't have dependencies"
+        assert exc_info.value.message == ("Dependency `mega_task` of task "
+                                          "`test_func` is not satisfied")
 
     def test_multi_task_pipeline_with_correct_dependencies(self):
         @task(depends=[], provides=['task1_result'])
@@ -92,6 +93,23 @@ class TestPipelineDependencyChecking(object):
 
         assert exc_info.value.message == ('Dependency `unknown_task_result` of'
                                           ' task `test_func3` is not satisfied')
+
+    def test_multi_task_pipeline_with_initialized_context(self):
+        @task(depends=['input_value'], provides=['task1_result'])
+        def test_func1(ctx): return ctx
+
+        @task(depends=['task1_result'], provides=['task2_result'])
+        def test_func2(ctx): return ctx
+
+        @task(depends=['task2_result'], provides=[])
+        def test_func3(ctx): return ctx
+
+        Pipeline(
+            test_func1(),
+            test_func2(),
+            test_func3(),
+            input_value='testing',
+        )
 
 
 class TestPipelineRun(object):

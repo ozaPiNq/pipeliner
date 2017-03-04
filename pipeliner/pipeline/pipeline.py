@@ -6,21 +6,16 @@ from .backend import GeventBackend
 
 
 class Pipeline(object):
-    def __init__(self, first_task, *tasks, **kwargs):
+    def __init__(self, *tasks, **kwargs):
         self._providers = {}
         self._backend = GeventBackend()
 
-        self._check_tasks(first_task, *tasks)
-
         self._context = Context(**kwargs)
 
-    def _check_tasks(self, first_task, *tasks):
-        if len(self._get_depends(first_task)) > 0:
-            raise TaskDependencyError("First task can't have dependencies")
+        self._check_tasks(*tasks)
 
-        self._tasks = [first_task] + list(tasks)
-
-        for task in self._tasks:
+    def _check_tasks(self, *tasks):
+        for task in tasks:
             if not isfunction(task):
                 raise ValueError("Task must be a function")
             if not self._is_applied(task):
@@ -37,6 +32,8 @@ class Pipeline(object):
             for prov in provides:
                 self._add_provider(prov, task)
 
+        self._tasks = list(tasks)
+
     def _is_applied(self, task):
         return hasattr(task, '_applied')
 
@@ -50,7 +47,7 @@ class Pipeline(object):
         self._providers[dependency] = task
 
     def _is_dependency_satisfied(self, dependency):
-        return (dependency in self._providers)
+        return (dependency in self._providers) or (dependency in self._context)
 
     def run(self, wait=False):
         self._backend.run(self._run_tasks)
