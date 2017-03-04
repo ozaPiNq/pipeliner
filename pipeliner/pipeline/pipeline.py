@@ -6,11 +6,13 @@ from .backend import GeventBackend
 
 
 class Pipeline(object):
-    def __init__(self, first_task, *tasks):
+    def __init__(self, first_task, *tasks, **kwargs):
         self._providers = {}
         self._backend = GeventBackend()
 
         self._check_tasks(first_task, *tasks)
+
+        self._context = Context(**kwargs)
 
     def _check_tasks(self, first_task, *tasks):
         if len(self._get_depends(first_task)) > 0:
@@ -56,9 +58,8 @@ class Pipeline(object):
             self.wait_until_complete()
 
     def _run_tasks(self):
-        context = Context()
         for task in self._tasks:
-            context = task(context)
+            self._context = task(self._context)
 
     def wait_until_complete(self):
         self._backend.wait_until_complete()

@@ -156,3 +156,20 @@ class TestPipelineRun(object):
         assert mock_func1.called == True
         assert mock_func2.called == True
         assert mock_func3.called == False
+
+
+class TestPipelineContextInitialization(object):
+    def test_init_pipeline_with_multiple_values(self, mock):
+        mock_func = mock()
+
+        @task()
+        def test_task(context):
+            mock_func(context)
+
+        pipeline = Pipeline(test_task(), key='value', file='random_file')
+        pipeline.run(wait=True)
+
+        context = mock_func.call_args[0][0]
+
+        assert context['key'] == 'value'
+        assert context['file'] == 'random_file'
