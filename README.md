@@ -7,14 +7,14 @@ Pipeliner is a task execution framework with dependencies control.
 #### Write simple tasks:
 
 ```python
-@task(depends=['url'], provides=['headers', 'data'])
-def fetch_url(context):
-    url = context.get('url')
+@task(provides=['headers', 'data', 'url'])
+def fetch_url(context, url):
 
     # Fetch url
 
     context['headers'] = result.headers
     context['data'] = result.content
+    context['url'] = url
 
 @task(depends=['url', 'headers'], provides=['filename'])
 def get_filename(context):
@@ -58,15 +58,14 @@ def foreach(context, func):
 ```python
 def file_processing_pipeline(url):
     return Pipeline(
-        tasks.fetch_url(),
-        tasks.get_filename(),
-        tasks.save_file(folder=folder),
-        url=url
+        fetch_url(url=url),
+        get_filename(),
+        save_file(folder=folder),
     )
 
 Pipeline(
-    tasks.read_file(input_file=input_file),
-    tasks.foreach(file_processing_pipeline)
+    read_file(input_file=input_file),
+    foreach(file_processing_pipeline)
 ).run(wait=True)
 
 ```
