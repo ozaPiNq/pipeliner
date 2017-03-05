@@ -10,3 +10,11 @@ class AbstractBackend(with_metaclass(ABCMeta, object)):
     @abstractmethod
     def wait_until_complete(self):
         pass
+
+    @abstractmethod
+    def wait_for(self, threads):
+        pass
+
+    @abstractproperty
+    def current_thread(self):
+        pass

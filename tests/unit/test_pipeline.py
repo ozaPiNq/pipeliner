@@ -191,3 +191,35 @@ class TestPipelineContextInitialization(object):
 
         assert context['key'] == 'value'
         assert context['file'] == 'random_file'
+
+
+class TestPipelineSynchronization(object):
+    def test_wait_for(self, mock):
+        mock_func1 = mock()
+        mock_func2 = mock()
+        mock_func3 = mock()
+
+        @task()
+        def test_func(context, cb, time=1):
+            from time import sleep
+            sleep(time)
+            cb()
+
+        @task()
+        def start_nested_pipeline(context):
+            p1 = Pipeline(test_func(mock_func1, time=1))
+            p2 = Pipeline(test_func(mock_func2, time=2))
+            p3 = Pipeline(test_func(mock_func3, time=2))
+
+            p1.run()
+            p2.run()
+            p3.run()
+
+            context.current_pipeline.wait_for([p1, p2, p3])
+
+        parent_pipeline = Pipeline(start_nested_pipeline())
+        parent_pipeline.run(wait=True)
+
+        assert mock_func1.called
+        assert mock_func2.called
+        assert mock_func3.called

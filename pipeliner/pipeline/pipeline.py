@@ -1,7 +1,7 @@
 from inspect import isfunction
 from pipeliner.register import Register
 from pipeliner.context import Context
-from pipeliner.exceptions import TaskDependencyError
+from pipeliner.exceptions import TaskDependencyError, PipelineIsNotRunning
 from .backend import GeventBackend
 
 
@@ -13,6 +13,9 @@ class Pipeline(object):
         self._context = Context(current_pipeline=self, **kwargs)
 
         self._check_tasks(*tasks)
+
+        self._is_running = False
+        self._is_finished = False
 
     def _check_tasks(self, *tasks):
         for task in tasks:
@@ -50,9 +53,14 @@ class Pipeline(object):
         return (dependency in self._providers) or (dependency in self._context)
 
     def run(self, wait=False):
-        self._backend.run(self._run_tasks)
-        if wait:
-            self.wait_until_complete()
+        self._is_running = True
+        try:
+            self._backend.run(self._run_tasks)
+            if wait:
+                self.wait_until_complete()
+        finally:
+            self._is_running = False
+            self._is_finished = True
 
     def _run_tasks(self):
         for task in self._tasks:
@@ -60,6 +68,16 @@ class Pipeline(object):
 
     def wait_until_complete(self):
         self._backend.wait_until_complete()
+
+    def wait_for(self, pipelines):
+        threads = []
+        for pipe in pipelines:
+            if not pipe._is_running and not pipe._is_finished:
+                raise PipelineIsNotRunning()
+
+            threads.append(pipe._backend.current_thread)
+
+        self._backend.wait_for(threads)
 
     @property
     def tasks(self):

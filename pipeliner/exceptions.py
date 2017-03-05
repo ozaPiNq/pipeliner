@@ -20,3 +20,7 @@ class TaskDependencyError(PipelineException):
 
 class PipelineAlreadyRunning(PipelineException):
     pass
+
+
+class PipelineIsNotRunning(PipelineException):
+    pass
