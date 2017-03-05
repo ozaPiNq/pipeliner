@@ -10,7 +10,7 @@ class Pipeline(object):
         self._providers = {}
         self._backend = GeventBackend()
 
-        self._context = Context(**kwargs)
+        self._context = Context(current_pipeline=self, **kwargs)
 
         self._check_tasks(*tasks)
 
