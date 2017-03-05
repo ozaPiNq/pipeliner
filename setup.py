@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pipeliner",
-    description="Task execution framework with dependencies control",
+    description="Task execution framework with dependency control",
     version="0.0.4",
     author="Nikolay Sedelnikov",
     author_email="n.sedelnikov@gmail.com",

@@ -1,6 +1,6 @@
 # Pipeliner
 
-Pipeliner is a task execution framework with dependencies control.
+Pipeliner is a task execution framework with dependency control.
 
 ## Example
 
