@@ -4,6 +4,21 @@ Pipeliner is a task execution framework with dependencies control.
 
 ## Example
 
+We have text file with urls. Our task is to save all images to the local hard
+drive.
+Let's split this task into small pieces:
+* fetch_file
+* get_filename
+* save_file
+* read_file
+
+We can split these tasks into two different pipelines:
+1. read input file and start main pipeline for each URL in file
+2. fetch url and save image to disk
+
+![Pipeline scheme](pipeliner/docs/pipes.png)
+
+
 #### Write simple tasks:
 
 ```python
