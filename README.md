@@ -16,7 +16,7 @@ We can split these tasks into two different pipelines:
 1. read input file and start main pipeline for each URL in file
 2. fetch url and save image to disk
 
-![Pipeline scheme](pipeliner/docs/pipes.png)
+![Pipeline scheme](pipeliner/docs/pipes.png?raw=true)
 
 
 #### Write simple tasks:
