@@ -3,6 +3,9 @@ import gevent
 from .abstract import AbstractBackend
 from pipeliner.exceptions import PipelineAlreadyRunning
 
+from gevent import monkey
+monkey.patch_all()
+
 
 class GeventBackend(AbstractBackend):
     def __init__(self):
