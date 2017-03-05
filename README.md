@@ -16,7 +16,7 @@ We can split these tasks into two different pipelines:
 1. read input file and start main pipeline for each URL in file
 2. fetch url and save image to disk
 
-![Pipeline scheme](/docs/pipes.png?raw=true)
+![pipes](https://cloud.githubusercontent.com/assets/26138335/23591981/dc2899bc-020a-11e7-933d-18ec105e2c8a.png)
 
 
 #### Write simple tasks:
