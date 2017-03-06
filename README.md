@@ -7,14 +7,15 @@ Pipeliner is a task execution framework with dependency control.
 We have text file with urls. Our task is to save all images to the local hard
 drive.
 Let's split this task into small pieces:
+* read_file
 * fetch_file
 * get_filename
 * save_file
-* read_file
 
 We can split these tasks into two different pipelines:
+
 1. read input file and start main pipeline for each URL in file
-2. fetch url and save image to disk
+2. fetch url, get filename and save image to disk
 
 ![pipes](https://cloud.githubusercontent.com/assets/26138335/23591981/dc2899bc-020a-11e7-933d-18ec105e2c8a.png)
 
